@@ -4,7 +4,7 @@
 
 // 获取战报列表
 export const fetchMatchList = async (playerId, gameType = 'bf1', before = null) => {
-  let url = `https://ea-api.2788.pro/tracker/${gameType}/matches/${playerId}`;
+  let url = `/api/${gameType}/matches/${playerId}`;
   
   if (before) {
     url += `?before=${before}`;

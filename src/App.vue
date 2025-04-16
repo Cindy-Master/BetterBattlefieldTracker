@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import MatchCard from './components/MatchCard.vue';
 import DateGroup from './components/DateGroup.vue';
 import ConfigPanel from './components/ConfigPanel.vue';
@@ -16,6 +17,22 @@ const currentTimestamp = ref(null); // 当前时间戳
 const currentPage = ref(1); // 当前页码
 const gameType = ref('bf1'); // 默认游戏类型：战地一
 const showMobileFilter = ref(false); // 移动端筛选器显示状态
+
+// 路由
+const route = useRoute();
+
+// 监听路由参数变化
+watch(() => route.params, (params) => {
+  if (params.gameType && (params.gameType === 'bf1' || params.gameType === 'bfv')) {
+    gameType.value = params.gameType;
+  }
+  
+  if (params.playerId) {
+    playerId.value = params.playerId;
+    currentTimestamp.value = null;
+    loadMatches(true);
+  }
+}, { immediate: true });
 
 // 获取战报列表
 const loadMatches = async (reset = false) => {

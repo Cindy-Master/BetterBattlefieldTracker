@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
   playerId: {
@@ -21,6 +22,8 @@ const emit = defineEmits(['search', 'setTimestamp', 'changeGameType']);
 const localPlayerId = ref(props.playerId);
 const dateTime = ref('');
 const selectedGameType = ref(props.gameType);
+
+const router = useRouter();
 
 // 监听timestamp属性变化
 watch(() => props.timestamp, (newVal) => {
@@ -61,6 +64,9 @@ onMounted(() => {
 // 搜索玩家
 const searchPlayer = () => {
   if (!localPlayerId.value.trim()) return;
+  // 导航到对应的URL
+  router.push(`/${selectedGameType.value}/matches/${localPlayerId.value}`);
+  // 触发搜索事件
   emit('search', localPlayerId.value);
 };
 
@@ -91,6 +97,10 @@ const maxDateTime = () => {
 // 切换游戏类型
 const changeGameType = (type) => {
   selectedGameType.value = type;
+  // 如果已经有玩家ID，则更新URL
+  if (localPlayerId.value) {
+    router.push(`/${type}/matches/${localPlayerId.value}`);
+  }
   emit('changeGameType', type);
 };
 </script>
