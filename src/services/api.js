@@ -1,10 +1,10 @@
 /**
- * 战地一API服务
+ * 战地API服务
  */
 
 // 获取战报列表
-export const fetchMatchList = async (playerId, before = null) => {
-  let url = `https://ea-api.2788.pro/tracker/bf1/matches/${playerId}`;
+export const fetchMatchList = async (playerId, gameType = 'bf1', before = null) => {
+  let url = `https://ea-api.2788.pro/tracker/${gameType}/matches/${playerId}`;
   
   if (before) {
     url += `?before=${before}`;
@@ -37,6 +37,6 @@ export const formatTimestamp = (timestamp) => {
 };
 
 // 构建战报详情页URL
-export const getReportUrl = (matchId) => {
-  return `https://battlefieldtracker.com/bf1/gamereport/origin/${matchId}`;
+export const getReportUrl = (matchId, gameType = 'bf1') => {
+  return `https://battlefieldtracker.com/${gameType}/gamereport/origin/${matchId}`;
 }; 

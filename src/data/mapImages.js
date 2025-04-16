@@ -1,4 +1,4 @@
-const mapImages = {
+const bf1MapImages = {
   "MP_MountainFort": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Tunguska/118/81/MP_MountainFort_LandscapeLarge-8a517533.jpg",
   "MP_Forest": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Tunguska/33/69/MP_Forest_LandscapeLarge-dfbbe910.jpg",
   "MP_ItalianCoast": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Tunguska/21/3/MP_ItalianCoast_LandscapeLarge-1503eec7.jpg",
@@ -33,4 +33,38 @@ const mapImages = {
   "MP_London": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Tunguska/11/81/MP_London_LandscapeLarge-0b51fe46.jpg"
 };
 
-export default mapImages; 
+// 战地五地图图片
+const bfvMapImages = {
+  "MP_ArcticFjell": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/81/47/1080p_MP_ArcticFjell-512f0252.jpg",
+  "MP_ArcticFjord": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/6/105/1080p_MP_ArcticFjord-fa69becc.jpg",
+  "MP_Arras": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/24/114/1080p_MP_Arras-1872a451.jpg",
+  "MP_Devastation": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/32/54/1080p_MP_Devastation-20ca8ca8.jpg",
+  "MP_Escaut": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/47/49/1080p_MP_Escaut-2f31901c.jpg",
+  "MP_Foxhunt": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/90/30/1080p_MP_AfricanFox-5ae2431e.jpg",
+  "MP_Halfaya": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/3/31/1080p_MP_AfricanHalfaya-fd1f6aa6.jpg",
+  "MP_Rotterdam": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/43/107/1080p_MP_Rotterdam-d56b8075.jpg",
+  "MP_Hannut": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/57/40/1080p_MP_Hannut-c7d8f4aa.jpg",
+  "MP_GOps_Chapter2_Arras": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/24/114/1080p_MP_Arras-1872a451.jpg",
+  "DK_Norway": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/96/46/DK_Norway_1080p-60d27c08.jpg",
+  "MP_WE_Fortress_Devastation": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/32/54/1080p_MP_Devastation-20ca8ca8.jpg",
+  "MP_WE_Fortress_Halfaya": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/3/31/1080p_MP_AfricanHalfaya-fd1f6aa6.jpg",
+  "MP_WE_Grind_ArcticFjord": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/6/105/1080p_MP_ArcticFjord-fa69becc.jpg",
+  "MP_WE_Grind_Devastation": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/32/54/1080p_MP_Devastation-20ca8ca8.jpg",
+  "MP_WE_Grind_Escaut": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/47/49/1080p_MP_Escaut-2f31901c.jpg",
+  "MP_WE_Grind_Rotterdam": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/43/107/1080p_MP_Rotterdam-d56b8075.jpg",
+  "MP_Crete": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/94/112/1080p_MP_Crete-5e70c981.jpg",
+  "MP_Kalamas": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/18/22/1080p_MP_Kalamas-12ea6a65.jpg",
+  "MP_Norway": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/1/11/1080p_MP_Norway-010bad65.jpg",
+  "MP_Provence": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/62/74/1080p_MP_ProvenceXL-3e4a311e.jpg",
+  "MP_SandAndSea": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/35/39/1080p_MP_SandAndSea-23d987ee.jpg",
+  "MP_Bunker": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/37/63/1080p_MP_Bunker-25c1330c.jpg",
+  "MP_IwoJima": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/59/127/1080p_MP_IwoJima-c57fe2b8.jpg",
+  "MP_TropicIslands": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/78/116/1080p_MP_TropicIslands-b28ccf38.jpg",
+  "MP_WakeIsland": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/82/49/1080p_MP_WakeIsland-5231f093.jpg",
+  "MP_Jungle": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/22/52/1080p_MP_Jungle-1634bb4c.jpg",
+  "MP_Libya": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/72/104/1080p_MP_Libya-486833f4.jpg",
+  "MP_Escaut_US": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/47/49/1080p_MP_Escaut-2f31901c.jpg",
+  "MP_Hannut_US": "https://eaassets-a.akamaihd.net/battlelog/battlebinary/gamedata/Casablanca/57/40/1080p_MP_Hannut-c7d8f4aa.jpg"
+};
+
+export { bf1MapImages, bfvMapImages }; 

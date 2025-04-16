@@ -1,4 +1,4 @@
-const mapData = {
+const bf1MapData = {
   "MP_Amiens": "亚眠",
   "MP_ItalianCoast": "帝国边境",
   "MP_ShovelTown": "攻占托尔",
@@ -33,7 +33,7 @@ const mapData = {
   "MP_Alps": "剃刀边缘"
 };
 
-const modeData = {
+const bf1ModeData = {
   "Conquest0": "征服",
   "TeamDeathMatch0": "团队死斗",
   "BreakthroughLarge0": "行动模式",
@@ -46,4 +46,68 @@ const modeData = {
   "AirAssault0": "空中突击"
 };
 
-export { mapData, modeData }; 
+const bfvMapData = {
+  "MP_ArcticFjell": "菲耶尔 652",
+  "MP_ArcticFjord": "纳尔维克",
+  "MP_Arras": "阿拉斯",
+  "MP_Devastation": "荒废之地",
+  "MP_Escaut": "扭曲钢铁(英)",
+  "MP_Foxhunt": "民用机场",
+  "MP_Halfaya": "哈马达",
+  "MP_Rotterdam": "鹿特丹",
+  "MP_Hannut": "战车风暴(英)",
+  "MP_Crete": "水星",
+  "MP_Kalamas": "马瑞塔",
+  "MP_Norway": "罗弗敦群岛",
+  "MP_Provence": "普罗旺斯",
+  "MP_SandAndSea": "艾尔舒丹",
+  "MP_Bunker": "地下行动",
+  "MP_IwoJima": "硫磺岛",
+  "MP_TropicIslands": "太平洋风暴",
+  "MP_WakeIsland": "威克岛",
+  "MP_Jungle": "所罗门群岛",
+  "MP_Libya": "迈尔季营地",
+  "MP_Escaut_US": "扭曲钢铁",
+  "MP_Hannut_US": "战车风暴",
+  "DK_Norway": "半岛",
+  "MP_GOps_Chapter2_Arras": "阿拉斯",
+  "MP_WE_Fortress_Devastation": "荒废之地",
+  "MP_WE_Fortress_Halfaya": "哈马达",
+  "MP_WE_Grind_ArcticFjord": "纳尔维克",
+  "MP_WE_Grind_Devastation": "荒废之地",
+  "MP_WE_Grind_Escaut": "扭曲钢铁",
+  "MP_WE_Grind_Rotterdam": "鹿特丹"
+};
+
+const bfvModeData = {
+  "Airborne0": "空降",
+  "Breakthrough0": "突破",
+  "BreakthroughSmall0": "突破",
+  "Conquest0": "征服",
+  "Domination0": "抢攻",
+  "FinalStand0": "最终之战",
+  "Frontlines0": "前线",
+  "FrontlinesMedium0": "前线",
+  "Rush0": "突袭",
+  "TeamDeathMatch0": "团队死斗",
+  "DakarSolo0": "火线风暴(单人)",
+  "DakarDuo0": "火线风暴(双人)",
+  "DakarSquad0": "火线风暴(小队)",
+  "SquadConquest0": "小队征服",
+  "FrontlinesSmall0": "小型前线",
+  "DominationSmall0": "小型抢攻",
+  "TeamDeathMatchSmall0": "小型团队死斗",
+  "RushLarge0": "大型突袭",
+  "RushSMALL0": "小型突袭",
+  "SquadConquestTMNT0": "小队征服锦标赛",
+  "Outpost0": "前哨",
+  "FinalStandAlone0": "最终孤战"
+};
+
+// 导出地图和模式数据
+export { 
+  bf1MapData as bf1Map, 
+  bf1ModeData as bf1Mode, 
+  bfvMapData as bfvMap, 
+  bfvModeData as bfvMode 
+}; 

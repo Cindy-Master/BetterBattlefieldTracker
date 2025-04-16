@@ -1,18 +1,38 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import mapImages from '../data/mapImages';
+import { ref, onMounted, watch } from 'vue';
+import { bf1MapImages, bfvMapImages } from '../data/mapImages';
 
-// 从mapImages对象中提取所有图片URL数组
-const imageUrls = Object.values(mapImages);
+const props = defineProps({
+  gameType: {
+    type: String,
+    default: 'bf1'
+  }
+});
 
-// 当前显示的图片URL
 const backgroundImage = ref('');
 
-// 在组件挂载后随机选择一张背景图片
+// 获取当前游戏的地图图片列表
+const getMapImages = () => {
+  const images = props.gameType === 'bf1' ? bf1MapImages : bfvMapImages;
+  return Object.values(images);
+};
+
+// 随机选择一张背景图片
+const selectRandomBackground = () => {
+  const images = getMapImages();
+  const randomIndex = Math.floor(Math.random() * images.length);
+  backgroundImage.value = images[randomIndex];
+};
+
+// 监听游戏类型变化
+watch(() => props.gameType, () => {
+  // 当游戏类型变化时，随机选择一张新背景
+  selectRandomBackground();
+}, { immediate: true });
+
+// 组件挂载时选择一个随机背景
 onMounted(() => {
-  // 随机选择一张图片作为背景
-  const randomIndex = Math.floor(Math.random() * imageUrls.length);
-  backgroundImage.value = imageUrls[randomIndex];
+  selectRandomBackground();
 });
 </script>
 
@@ -34,7 +54,6 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   z-index: -1;
-  overflow: hidden;
 }
 
 .background-image {
@@ -45,7 +64,6 @@ onMounted(() => {
   height: 100%;
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
 }
 
 .background-overlay {
@@ -54,7 +72,7 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(20, 20, 20, 0.7);
-  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
 }
 </style> 

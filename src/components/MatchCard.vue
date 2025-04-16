@@ -1,28 +1,35 @@
 <script setup>
 import { computed } from 'vue';
-import { mapData, modeData } from '../data/mapData';
-import mapImages from '../data/mapImages';
+import { bf1Map, bf1Mode, bfvMap, bfvMode } from '../data/mapData';
+import { bf1MapImages, bfvMapImages } from '../data/mapImages';
 import { formatTimestamp, getReportUrl } from '../services/api';
 
 const props = defineProps({
   match: {
     type: Object,
     required: true
+  },
+  gameType: {
+    type: String,
+    default: 'bf1'
   }
 });
 
 // 获取地图名称
 const mapName = computed(() => {
+  const mapData = props.gameType === 'bf1' ? bf1Map : bfvMap;
   return mapData[props.match.map] || props.match.map;
 });
 
 // 获取模式名称
 const modeName = computed(() => {
+  const modeData = props.gameType === 'bf1' ? bf1Mode : bfvMode;
   return modeData[props.match.mode] || props.match.mode;
 });
 
 // 获取地图背景图片
 const mapImage = computed(() => {
+  const mapImages = props.gameType === 'bf1' ? bf1MapImages : bfvMapImages;
   return mapImages[props.match.map] || '';
 });
 
@@ -33,7 +40,7 @@ const formattedTime = computed(() => {
 
 // 获取战报详情页链接
 const reportUrl = computed(() => {
-  return getReportUrl(props.match.id);
+  return getReportUrl(props.match.id, props.gameType);
 });
 
 // 打开战报详情页
@@ -86,7 +93,6 @@ const openReport = () => {
   height: 100%;
   background-size: cover;
   background-position: center;
-  z-index: 1;
 }
 
 .match-card-overlay {
@@ -95,14 +101,13 @@ const openReport = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
-  z-index: 2;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.9) 90%);
 }
 
 .match-card-content {
   position: relative;
-  padding: 20px;
-  z-index: 3;
+  z-index: 1;
+  padding: 15px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -111,23 +116,23 @@ const openReport = () => {
 
 .match-card-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
 .map-name {
+  font-size: 18px;
+  font-weight: bold;
   margin: 0;
-  font-size: 22px;
-  font-weight: 700;
+  color: var(--bf1-orange);
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .mode-name {
-  font-size: 16px;
-  padding: 5px 10px;
-  background-color: rgba(255, 160, 0, 0.8);
-  border-radius: 4px;
-  font-weight: 600;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
 }
 
 .match-card-body {
@@ -135,17 +140,16 @@ const openReport = () => {
 }
 
 .server-name {
-  margin-bottom: 10px;
   font-size: 14px;
   opacity: 0.9;
+  margin-bottom: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
 }
 
 .match-time {
-  font-size: 14px;
-  opacity: 0.8;
+  font-size: 12px;
+  opacity: 0.7;
 }
 </style> 

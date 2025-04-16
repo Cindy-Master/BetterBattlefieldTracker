@@ -10,6 +10,10 @@ const props = defineProps({
   matches: {
     type: Array,
     required: true
+  },
+  gameType: {
+    type: String,
+    default: 'bf1'
   }
 });
 
@@ -52,7 +56,8 @@ const formattedDate = computed(() => {
       <MatchCard 
         v-for="match in matches" 
         :key="match.id" 
-        :match="match" 
+        :match="match"
+        :game-type="gameType"
       />
     </div>
   </div>

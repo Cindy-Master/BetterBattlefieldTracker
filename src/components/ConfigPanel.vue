@@ -9,13 +9,18 @@ const props = defineProps({
   timestamp: {
     type: Number,
     default: null
+  },
+  gameType: {
+    type: String,
+    default: 'bf1'
   }
 });
 
-const emit = defineEmits(['search', 'setTimestamp']);
+const emit = defineEmits(['search', 'setTimestamp', 'changeGameType']);
 
 const localPlayerId = ref(props.playerId);
 const dateTime = ref('');
+const selectedGameType = ref(props.gameType);
 
 // 监听timestamp属性变化
 watch(() => props.timestamp, (newVal) => {
@@ -26,6 +31,11 @@ watch(() => props.timestamp, (newVal) => {
   } else {
     dateTime.value = '';
   }
+}, { immediate: true });
+
+// 监听gameType变化
+watch(() => props.gameType, (newVal) => {
+  selectedGameType.value = newVal;
 }, { immediate: true });
 
 // 格式化日期时间为input元素的值
@@ -77,11 +87,37 @@ const maxDateTime = () => {
   const now = new Date();
   return formatDateTimeForInput(now);
 };
+
+// 切换游戏类型
+const changeGameType = (type) => {
+  selectedGameType.value = type;
+  emit('changeGameType', type);
+};
 </script>
 
 <template>
   <div class="config-panel">
     <h2 class="panel-title">查询配置</h2>
+    
+    <div class="config-section">
+      <h3>游戏选择</h3>
+      <div class="game-selector">
+        <button 
+          class="game-option" 
+          :class="{ 'active': selectedGameType === 'bf1' }"
+          @click="changeGameType('bf1')"
+        >
+          战地一
+        </button>
+        <button 
+          class="game-option" 
+          :class="{ 'active': selectedGameType === 'bfv' }"
+          @click="changeGameType('bfv')"
+        >
+          战地五
+        </button>
+      </div>
+    </div>
     
     <div class="config-section">
       <h3>玩家ID</h3>
@@ -118,6 +154,7 @@ const maxDateTime = () => {
     <div class="config-section">
       <h3>说明</h3>
       <div class="info-text">
+        <p>- 选择游戏：战地一或战地五</p>
         <p>- 输入玩家ID后点击搜索</p>
         <p>- 选择日期时间获取特定时间之前的战报</p>
         <p>- 不选择时间则获取最新战报</p>
@@ -152,6 +189,34 @@ const maxDateTime = () => {
   font-size: 16px;
   margin-bottom: 10px;
   color: #ffffff;
+}
+
+.game-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.game-option {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.game-option.active {
+  background-color: var(--bf1-orange);
+  border-color: var(--bf1-orange);
+}
+
+.game-option:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .input-group {

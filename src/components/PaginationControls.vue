@@ -6,22 +6,13 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  hasPrev: {
-    type: Boolean,
-    default: false
-  },
   page: {
     type: Number,
     default: 1
   }
 });
 
-const emit = defineEmits(['prev', 'next']);
-
-// 上一页
-const prevPage = () => {
-  emit('prev');
-};
+const emit = defineEmits(['next']);
 
 // 下一页
 const nextPage = () => {
@@ -31,15 +22,6 @@ const nextPage = () => {
 
 <template>
   <div class="pagination-controls">
-    <button 
-      class="pagination-btn" 
-      @click="prevPage" 
-      :disabled="!hasPrev"
-      :class="{ 'disabled': !hasPrev }"
-    >
-      <span class="arrow">←</span> 上一页
-    </button>
-    
     <div class="page-info">
       第 {{ page }} 页
     </div>
@@ -99,5 +81,13 @@ const nextPage = () => {
 .arrow {
   font-size: 18px;
   margin: 0 5px;
+}
+
+/* 响应式样式 */
+@media (max-width: 768px) {
+  .pagination-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 </style> 
