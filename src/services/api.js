@@ -4,6 +4,17 @@
 
 // 获取战报列表
 export const fetchMatchList = async (playerId, gameType = 'bf1', before = null) => {
+  if (!playerId) {
+    console.error('缺少playerId参数');
+    throw new Error('缺少playerId参数');
+  }
+  
+  // 确保gameType是有效值
+  if (gameType !== 'bf1' && gameType !== 'bfv') {
+    console.warn(`无效的游戏类型: ${gameType}，将使用默认值bf1`);
+    gameType = 'bf1';
+  }
+  
   let url = `/api/${gameType}/matches/${playerId}`;
   
   if (before) {
@@ -11,15 +22,27 @@ export const fetchMatchList = async (playerId, gameType = 'bf1', before = null) 
   }
   
   try {
-    const response = await fetch(url);
+    console.log(`正在获取玩家[${playerId}]的${gameType}战报，URL: ${url}`);
+    
+    // 添加随机参数避免缓存
+    const nocacheUrl = `${url}${url.includes('?') ? '&' : '?'}_nocache=${Date.now()}`;
+    
+    const response = await fetch(nocacheUrl, {
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
     
     if (!response.ok) {
       throw new Error(`API请求失败: ${response.status}`);
     }
     
-    return await response.json();
+    const data = await response.json();
+    console.log(`成功获取[${playerId}]的${gameType}战报数据，共${data.length}条`);
+    return data;
   } catch (error) {
-    console.error('获取战报列表失败:', error);
+    console.error(`获取[${playerId}]的${gameType}战报失败:`, error);
     throw error;
   }
 };

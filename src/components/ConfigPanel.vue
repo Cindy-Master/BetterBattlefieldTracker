@@ -25,6 +25,11 @@ const selectedGameType = ref(props.gameType);
 
 const router = useRouter();
 
+// 监听playerId属性变化
+watch(() => props.playerId, (newVal) => {
+  localPlayerId.value = newVal;
+}, { immediate: true });
+
 // 监听timestamp属性变化
 watch(() => props.timestamp, (newVal) => {
   if (newVal) {
@@ -64,6 +69,7 @@ onMounted(() => {
 // 搜索玩家
 const searchPlayer = () => {
   if (!localPlayerId.value.trim()) return;
+  console.log(`搜索玩家: ID=${localPlayerId.value}, 游戏=${selectedGameType.value}`);
   // 导航到对应的URL
   router.push(`/${selectedGameType.value}/matches/${localPlayerId.value}`);
   // 触发搜索事件
@@ -96,6 +102,7 @@ const maxDateTime = () => {
 
 // 切换游戏类型
 const changeGameType = (type) => {
+  console.log(`切换游戏类型: ${type}, 当前玩家ID: ${localPlayerId.value}`);
   selectedGameType.value = type;
   // 如果已经有玩家ID，则更新URL
   if (localPlayerId.value) {

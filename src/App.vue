@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import MatchCard from './components/MatchCard.vue';
 import DateGroup from './components/DateGroup.vue';
@@ -8,31 +8,60 @@ import PaginationControls from './components/PaginationControls.vue';
 import BackgroundRotator from './components/BackgroundRotator.vue';
 import { fetchMatchList } from './services/api';
 
+// 路由
+const route = useRoute();
+
+// 读取全局路由参数（如果存在）
+const routerParams = window.__ROUTER_PARAMS__ || {};
+console.log('读取全局路由参数:', routerParams);
+
 // 状态
 const matches = ref([]);
 const loading = ref(false);
 const error = ref(null);
-const playerId = ref('bilibili22'); // 默认玩家ID
+// 根据全局路由参数或路由参数初始化状态
+const gameType = ref(
+  routerParams.gameType || 
+  (route.params.gameType && ['bf1', 'bfv'].includes(route.params.gameType) ? route.params.gameType : 'bf1')
+);
+const playerId = ref(routerParams.playerId || route.params.playerId || 'bilibili22'); // 默认玩家ID
 const currentTimestamp = ref(null); // 当前时间戳
 const currentPage = ref(1); // 当前页码
-const gameType = ref('bf1'); // 默认游戏类型：战地一
 const showMobileFilter = ref(false); // 移动端筛选器显示状态
 
-// 路由
-const route = useRoute();
+// 用全局参数标记是否为直接访问
+const isDirectAccess = ref(!!routerParams.directAccess);
+
+// 清除全局参数，避免影响后续操作
+if (window.__ROUTER_PARAMS__) {
+  delete window.__ROUTER_PARAMS__;
+}
+
+console.log(`初始化状态: 玩家=${playerId.value}, 游戏=${gameType.value}, 直接访问=${isDirectAccess.value}`);
 
 // 监听路由参数变化
 watch(() => route.params, (params) => {
+  console.log('路由参数变化:', params);
+  
   if (params.gameType && (params.gameType === 'bf1' || params.gameType === 'bfv')) {
     gameType.value = params.gameType;
+    console.log('游戏类型已更新为:', gameType.value);
   }
   
   if (params.playerId) {
     playerId.value = params.playerId;
+    console.log('玩家ID已更新为:', playerId.value);
     currentTimestamp.value = null;
-    loadMatches(true);
+    nextTick(() => {
+      // 如果不是初始直接访问，则加载战报
+      if (!isDirectAccess.value) {
+        loadMatches(true);
+      } else {
+        isDirectAccess.value = false; // 重置直接访问标记
+      }
+    });
   }
-}, { immediate: true });
+}, { immediate: false }); // 改为false，避免初始重复触发
 
 // 获取战报列表
 const loadMatches = async (reset = false) => {
@@ -47,6 +76,7 @@ const loadMatches = async (reset = false) => {
       currentPage.value = 1;
     }
     
+    console.log(`正在加载战报: 玩家=${playerId.value}, 游戏=${gameType.value}, 时间戳=${currentTimestamp.value}`);
     const data = await fetchMatchList(playerId.value, gameType.value, currentTimestamp.value);
     
     if (data && data.length > 0) {
@@ -133,8 +163,10 @@ const toggleMobileFilter = () => {
 // 检查是否有下一页
 const hasNextPage = computed(() => matches.value.length > 0);
 
-// 页面加载时获取战报
+// 在组件挂载时立即加载战报
 onMounted(() => {
+  console.log('组件挂载，当前路由参数:', route.params);
+  console.log(`初始化加载战报: 玩家=${playerId.value}, 游戏=${gameType.value}`);
   loadMatches(true);
 });
 </script>
@@ -320,7 +352,7 @@ button {
 
 /* 移动端和桌面端显示控制 */
 .mobile-only {
-  display: none;
+  display: none !important;
 }
 
 .desktop-only {
@@ -337,7 +369,7 @@ button {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -505,11 +537,16 @@ button {
   }
   
   .mobile-only {
-    display: block;
+    display: block !important;
   }
   
   .desktop-only {
-    display: none;
+    display: none !important;
+  }
+  
+  /* 移动端筛选按钮在手机端显示 */
+  .mobile-filter-btn {
+    display: flex !important;
   }
   
   .app-footer {
