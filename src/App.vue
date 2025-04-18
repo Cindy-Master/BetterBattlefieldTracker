@@ -43,22 +43,27 @@ console.log(`初始化状态: 玩家=${playerId.value}, 游戏=${gameType.value}
 watch(() => route.params, (params) => {
   console.log('路由参数变化:', params);
   
+  let shouldLoadMatches = false;
+  
   if (params.gameType && (params.gameType === 'bf1' || params.gameType === 'bfv')) {
     gameType.value = params.gameType;
     console.log('游戏类型已更新为:', gameType.value);
+    shouldLoadMatches = true;
   }
   
   if (params.playerId) {
     playerId.value = params.playerId;
     console.log('玩家ID已更新为:', playerId.value);
     currentTimestamp.value = null;
+    shouldLoadMatches = true;
+  }
+  
+  // 如果参数变化，始终加载匹配的战报数据，无论是否直接访问
+  if (shouldLoadMatches) {
     nextTick(() => {
-      // 如果不是初始直接访问，则加载战报
-      if (!isDirectAccess.value) {
-        loadMatches(true);
-      } else {
-        isDirectAccess.value = false; // 重置直接访问标记
-      }
+      loadMatches(true);
+      // 重置直接访问标记
+      isDirectAccess.value = false;
     });
   }
 }, { immediate: false }); // 改为false，避免初始重复触发
