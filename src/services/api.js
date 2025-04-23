@@ -15,6 +15,7 @@ export const fetchMatchList = async (playerId, gameType = 'bf1', before = null) 
     gameType = 'bf1';
   }
   
+  // 使用正确的API基础URL
   let url = `/api/${gameType}/matches/${playerId}`;
   
   if (before) {

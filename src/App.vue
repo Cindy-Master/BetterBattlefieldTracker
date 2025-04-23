@@ -24,7 +24,7 @@ const gameType = ref(
   routerParams.gameType || 
   (route.params.gameType && ['bf1', 'bfv'].includes(route.params.gameType) ? route.params.gameType : 'bf1')
 );
-const playerId = ref(routerParams.playerId || route.params.playerId || 'bilibili22'); // 默认玩家ID
+const playerId = ref(routerParams.playerId || route.params.playerId || ''); // 改为空字符串
 const currentTimestamp = ref(null); // 当前时间戳
 const currentPage = ref(1); // 当前页码
 const showMobileFilter = ref(false); // 移动端筛选器显示状态
@@ -171,8 +171,14 @@ const hasNextPage = computed(() => matches.value.length > 0);
 // 在组件挂载时立即加载战报
 onMounted(() => {
   console.log('组件挂载，当前路由参数:', route.params);
-  console.log(`初始化加载战报: 玩家=${playerId.value}, 游戏=${gameType.value}`);
-  loadMatches(true);
+  // 只有当playerId有初始值时才加载战报
+  if (playerId.value) {
+    console.log(`初始化加载战报: 玩家=${playerId.value}, 游戏=${gameType.value}`);
+    loadMatches(true);
+  } else {
+    console.log('组件挂载，无初始玩家ID，等待用户输入或路由导航');
+    // 可选：在这里可以设置一个状态，提示用户进行搜索
+  }
 });
 </script>
 
