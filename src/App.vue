@@ -25,7 +25,8 @@ const gameType = ref(
   (route.params.gameType && ['bf1', 'bfv'].includes(route.params.gameType) ? route.params.gameType : 'bf1')
 );
 const playerId = ref(routerParams.playerId || route.params.playerId || ''); // 改为空字符串
-const currentTimestamp = ref(null); // 当前时间戳
+const paginationTimestamp = ref(null); // 用于翻页的时间戳
+const filterTimestamp = ref(null); // 用于用户筛选的时间戳
 const currentPage = ref(1); // 当前页码
 const showMobileFilter = ref(false); // 移动端筛选器显示状态
 
@@ -54,7 +55,7 @@ watch(() => route.params, (params) => {
   if (params.playerId) {
     playerId.value = params.playerId;
     console.log('玩家ID已更新为:', playerId.value);
-    currentTimestamp.value = null;
+    filterTimestamp.value = null;
     shouldLoadMatches = true;
   }
   
@@ -79,15 +80,17 @@ const loadMatches = async (reset = false) => {
     if (reset) {
       matches.value = [];
       currentPage.value = 1;
+      // 如果是重置请求，使用筛选时间戳初始化翻页时间戳
+      paginationTimestamp.value = filterTimestamp.value;
     }
     
-    console.log(`正在加载战报: 玩家=${playerId.value}, 游戏=${gameType.value}, 时间戳=${currentTimestamp.value}`);
-    const data = await fetchMatchList(playerId.value, gameType.value, currentTimestamp.value);
+    console.log(`正在加载战报: 玩家=${playerId.value}, 游戏=${gameType.value}, 时间戳=${paginationTimestamp.value}`);
+    const data = await fetchMatchList(playerId.value, gameType.value, paginationTimestamp.value);
     
     if (data && data.length > 0) {
       matches.value = data;
-      // 保存最后一条记录的时间戳，用于下一页
-      currentTimestamp.value = data[data.length - 1].timestamp;
+      // 保存最后一条记录的时间戳，仅用于翻页
+      paginationTimestamp.value = data[data.length - 1].timestamp;
     } else {
       matches.value = [];
     }
@@ -124,7 +127,7 @@ const groupedMatches = computed(() => {
 const searchPlayer = (id) => {
   if (!id.trim()) return;
   playerId.value = id;
-  currentTimestamp.value = null;
+  filterTimestamp.value = null;
   loadMatches(true);
   // 在移动端搜索后自动关闭筛选面板
   if (window.innerWidth <= 768) {
@@ -134,7 +137,10 @@ const searchPlayer = (id) => {
 
 // 设置时间戳
 const setTimestamp = (timestamp) => {
-  currentTimestamp.value = timestamp;
+  // 保存用户设置的时间戳
+  filterTimestamp.value = timestamp;
+  // 同时将翻页时间戳设置为筛选时间戳
+  paginationTimestamp.value = timestamp;
   currentPage.value = 1;
   loadMatches(true);
   // 在移动端设置时间后自动关闭筛选面板
@@ -155,7 +161,7 @@ const nextPage = () => {
 const changeGameType = (type) => {
   if (gameType.value !== type) {
     gameType.value = type;
-    currentTimestamp.value = null;
+    filterTimestamp.value = null;
     loadMatches(true);
   }
 };
@@ -174,6 +180,10 @@ onMounted(() => {
   // 只有当playerId有初始值时才加载战报
   if (playerId.value) {
     console.log(`初始化加载战报: 玩家=${playerId.value}, 游戏=${gameType.value}`);
+    // 如果没有设置筛选时间戳，默认使用当前时间
+    if (!filterTimestamp.value) {
+      filterTimestamp.value = Math.floor(Date.now() / 1000);
+    }
     loadMatches(true);
   } else {
     console.log('组件挂载，无初始玩家ID，等待用户输入或路由导航');
@@ -231,7 +241,7 @@ onMounted(() => {
         <div class="config-container desktop-only">
           <ConfigPanel 
             :player-id="playerId"
-            :timestamp="currentTimestamp"
+            :timestamp="filterTimestamp"
             :game-type="gameType"
             @search="searchPlayer"
             @set-timestamp="setTimestamp"
@@ -260,7 +270,7 @@ onMounted(() => {
           <div class="mobile-filter-content">
             <ConfigPanel 
               :player-id="playerId"
-              :timestamp="currentTimestamp"
+              :timestamp="filterTimestamp"
               :game-type="gameType"
               @search="searchPlayer"
               @set-timestamp="setTimestamp"
